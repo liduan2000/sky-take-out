@@ -28,6 +28,9 @@ public interface DishMapper {
 
     Page<DishVO> queryPage(DishPageQueryDTO dishPageQueryDTO);
 
+    @Select("select * from dish where id = #{id}")
+    Dish getById(Long id);
+
     List<Dish> getByIds(List<Long> ids);
 
     void deleteByIds(List<Long> ids);
