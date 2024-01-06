@@ -19,6 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -37,6 +38,7 @@ public class DishServiceImpl implements DishService {
      *
      * @param dishDTO
      */
+    @Transactional
     public void saveWithFlavor(DishDTO dishDTO) {
         Dish dish = new Dish();
         BeanUtils.copyProperties(dishDTO, dish);
@@ -68,6 +70,7 @@ public class DishServiceImpl implements DishService {
      *
      * @param ids
      */
+    @Transactional
     public void deleteBatch(List<Long> ids) {
         // 启售中的菜品不能删除
         List<Dish> dishes = dishMapper.getByIds(ids);
