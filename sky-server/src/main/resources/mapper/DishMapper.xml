@@ -26,4 +26,20 @@
         </where>
         order by create_time desc
     </select>
+
+    <select id="getByIds" resultType="dish">
+        select *
+        from dish
+        where id in
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+
+    <delete id="deleteByIds">
+        delete from dish where id in
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
 </mapper>
