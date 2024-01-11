@@ -8,3 +8,7 @@ sky:
     password: root
   localoss:
     dir-path: D:\skytakeaway\resources
+  redis:
+    host: localhost
+    port: 6379
+    database: 0
