@@ -2,6 +2,7 @@ package com.sky.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.sky.constant.CacheConstant;
 import com.sky.constant.MessageConstant;
 import com.sky.constant.StatusConstant;
 import com.sky.dto.DishDTO;
@@ -18,6 +19,8 @@ import com.sky.vo.DishVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,6 +43,7 @@ public class DishServiceImpl implements DishService {
      * @param dishDTO
      */
     @Transactional
+    @CacheEvict(cacheNames = CacheConstant.DISH_CACHE_NAME, key = "#dishDTO.categoryId")
     public void saveWithFlavor(DishDTO dishDTO) {
         Dish dish = new Dish();
         BeanUtils.copyProperties(dishDTO, dish);
@@ -72,6 +76,7 @@ public class DishServiceImpl implements DishService {
      * @param ids
      */
     @Transactional
+    @CacheEvict(cacheNames = CacheConstant.DISH_CACHE_NAME, allEntries = true)
     public void deleteBatch(List<Long> ids) {
         // 启售中的菜品不能删除
         List<Dish> dishes = dishMapper.getByIds(ids);
@@ -114,6 +119,7 @@ public class DishServiceImpl implements DishService {
      *
      * @param dishDTO
      */
+    @CacheEvict(cacheNames = CacheConstant.DISH_CACHE_NAME, allEntries = true)
     public void updateWithFlavor(DishDTO dishDTO) {
         // 修改菜品基本信息
         Dish dish = new Dish();
@@ -135,6 +141,7 @@ public class DishServiceImpl implements DishService {
      * @param dish
      * @return
      */
+    @Cacheable(cacheNames = CacheConstant.DISH_CACHE_NAME, key = "#dish.categoryId")
     public List<DishVO> listWithFlavor(Dish dish) {
         List<Dish> dishList = dishMapper.list(dish);
 
@@ -159,6 +166,7 @@ public class DishServiceImpl implements DishService {
      *
      * @param status
      */
+    @CacheEvict(cacheNames = CacheConstant.DISH_CACHE_NAME, allEntries = true)
     public void updateStatus(Integer status, Long id) {
         Dish dish = Dish.builder().
                 id(id)
