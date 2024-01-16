@@ -2,6 +2,7 @@ package com.sky.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.sky.constant.CacheConstant;
 import com.sky.constant.MessageConstant;
 import com.sky.constant.StatusConstant;
 import com.sky.dto.SetmealDTO;
@@ -21,6 +22,8 @@ import com.sky.vo.SetmealVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,6 +49,7 @@ public class SetmealServiceImpl implements SetmealService {
      * @param setmeal
      * @return
      */
+    @Cacheable(cacheNames = CacheConstant.SETMEAL_CACHE_NAME, key = "#setmeal.categoryId")
     public List<Setmeal> list(Setmeal setmeal) {
         List<Setmeal> list = setmealMapper.list(setmeal);
         return list;
@@ -62,6 +66,7 @@ public class SetmealServiceImpl implements SetmealService {
     }
 
     @Transactional
+    @CacheEvict(cacheNames = CacheConstant.SETMEAL_CACHE_NAME, key = "#setmealDTO.categoryId")
     public void saveWithDish(SetmealDTO setmealDTO) {
         Setmeal setmeal = new Setmeal();
         BeanUtils.copyProperties(setmealDTO, setmeal);
@@ -102,6 +107,7 @@ public class SetmealServiceImpl implements SetmealService {
      * @param ids
      */
     @Transactional
+    @CacheEvict(cacheNames = CacheConstant.SETMEAL_CACHE_NAME, allEntries = true)
     public void deleteBatch(List<Long> ids) {
         ids.forEach(id -> {
             Setmeal setmeal = setmealMapper.getById(id);
@@ -142,6 +148,7 @@ public class SetmealServiceImpl implements SetmealService {
      * @param setmealDTO
      */
     @Transactional
+    @CacheEvict(cacheNames = CacheConstant.SETMEAL_CACHE_NAME, allEntries = true)
     public void update(SetmealDTO setmealDTO) {
         Setmeal setmeal = new Setmeal();
         BeanUtils.copyProperties(setmealDTO, setmeal);
@@ -169,6 +176,7 @@ public class SetmealServiceImpl implements SetmealService {
      * @param status
      * @param id
      */
+    @CacheEvict(cacheNames = CacheConstant.SETMEAL_CACHE_NAME, allEntries = true)
     public void updateStatus(Integer status, Long id) {
         //起售套餐时，判断套餐内是否有停售菜品，有停售菜品提示"套餐内包含未启售菜品，无法启售"
         if (status == StatusConstant.ENABLE) {
