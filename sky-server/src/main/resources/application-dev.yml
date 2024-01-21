@@ -14,4 +14,11 @@ sky:
     database: 0
   wechat:
     appid:
-    secret: 
+    secret:
+    mchid: example
+    mchSerialNo: example
+    privateKeyFilePath: example
+    apiV3Key: example
+    weChatPayCertFilePath: example
+    notifyUrl: example
+    refundNotifyUrl: example
