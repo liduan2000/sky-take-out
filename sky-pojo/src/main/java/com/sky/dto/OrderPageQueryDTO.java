@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Data
-public class OrdersPageQueryDTO implements Serializable {
+public class OrderPageQueryDTO implements Serializable {
 
     private int page;
 
@@ -15,7 +15,7 @@ public class OrdersPageQueryDTO implements Serializable {
 
     private String number;
 
-    private  String phone;
+    private String phone;
 
     private Integer status;
 

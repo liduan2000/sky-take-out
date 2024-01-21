@@ -2,8 +2,8 @@ package com.sky.service.impl;
 
 import com.sky.constant.MessageConstant;
 import com.sky.context.BaseContext;
-import com.sky.dto.OrdersPaymentDTO;
-import com.sky.dto.OrdersSubmitDTO;
+import com.sky.dto.OrderPaymentDTO;
+import com.sky.dto.OrderSubmitDTO;
 import com.sky.entity.AddressBook;
 import com.sky.entity.Order;
 import com.sky.entity.OrderDetail;
@@ -42,13 +42,13 @@ public class OrderServiceImpl implements OrderService {
     /**
      * 提交订单
      *
-     * @param ordersSubmitDTO
+     * @param orderSubmitDTO
      * @return
      */
     @Transactional
-    public OrderSubmitVO submitOrder(OrdersSubmitDTO ordersSubmitDTO) {
+    public OrderSubmitVO submitOrder(OrderSubmitDTO orderSubmitDTO) {
         // 处理业务异常：地址簿为空 or 购物车为空
-        AddressBook addressBook = addressBookMapper.getById(ordersSubmitDTO.getAddressBookId());
+        AddressBook addressBook = addressBookMapper.getById(orderSubmitDTO.getAddressBookId());
         if (addressBook == null) {
             throw new AddressBookBusinessException(MessageConstant.ADDRESS_BOOK_IS_NULL);
         }
@@ -61,7 +61,7 @@ public class OrderServiceImpl implements OrderService {
         }
         // 向order表中插入1条数据
         Order order = new Order();
-        BeanUtils.copyProperties(ordersSubmitDTO, order);
+        BeanUtils.copyProperties(orderSubmitDTO, order);
         order.setNumber(String.valueOf(System.currentTimeMillis()));
         order.setStatus(Order.PENDING_PAYMENT);
         order.setUserId(userId);
@@ -97,10 +97,10 @@ public class OrderServiceImpl implements OrderService {
     /**
      * 订单支付
      *
-     * @param ordersPaymentDTO
+     * @param orderPaymentDTO
      * @return
      */
-    public OrderPaymentVO payment(OrdersPaymentDTO ordersPaymentDTO) throws Exception {
+    public OrderPaymentVO payment(OrderPaymentDTO orderPaymentDTO) throws Exception {
         // 当前登录用户id
 //        Long userId = BaseContext.getCurrentId();
 //        User user = userMapper.getById(userId);
@@ -120,7 +120,7 @@ public class OrderServiceImpl implements OrderService {
 //
 //        OrderPaymentVO vo = jsonObject.toJavaObject(OrderPaymentVO.class);
 //        vo.setPackageStr(jsonObject.getString("package"));
-        paySuccess(ordersPaymentDTO.getOrderNumber());
+        paySuccess(orderPaymentDTO.getOrderNumber());
 
         return new OrderPaymentVO();
     }
