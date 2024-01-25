@@ -22,3 +22,7 @@ sky:
     weChatPayCertFilePath: example
     notifyUrl: example
     refundNotifyUrl: example
+  shop:
+    address: 北京市海淀区成府路28号
+  baidu:
+    ak: SI6agxvAjTmHijRYXyymDRVG6qKxtf79
