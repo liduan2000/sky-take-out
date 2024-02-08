@@ -6,8 +6,10 @@ import com.sky.entity.Order;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface OrderMapper {
@@ -65,4 +67,13 @@ public interface OrderMapper {
      */
     @Select("select count(id) from `order` where status = #{status}")
     Integer countStatus(Integer status);
+
+    /**
+     * 获取从begin到end每日总营业额, [begin, end)
+     *
+     * @param begin
+     * @param end
+     * @return
+     */
+    List<Map<String, Object>> getDailySumByRange(LocalDate begin, LocalDate end);
 }

@@ -70,4 +70,12 @@
         </where>
         order by order_time desc
     </select>
+
+    <select id="getDailySumByRange" resultType="java.util.Map">
+        select DATE(order_time) as "orderDate", SUM(amount) as "dailySum"
+        from `order`
+        where order_time between #{begin} and #{end}
+        group by DATE(order_time)
+        order by DATE(order_time)
+    </select>
 </mapper>
