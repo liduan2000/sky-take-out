@@ -76,4 +76,11 @@ public interface OrderMapper {
      * @return
      */
     List<Map<String, Object>> getDailySumByRange(LocalDate begin, LocalDate end);
+
+    /**
+     * 根据动态条件统计订单数量
+     *
+     * @param map
+     */
+    Integer countByMap(Map<String, Object> map);
 }
