@@ -93,4 +93,11 @@ public interface OrderMapper {
      * @return
      */
     List<GoodsSalesDTO> getSalesTop10(LocalDateTime begin, LocalDateTime end);
+
+    /**
+     * 根据动态条件统计营业额
+     *
+     * @param map
+     */
+    Double sumByMap(Map map);
 }
